@@ -12,16 +12,22 @@ class User(AbstractUser):
 
 
 class Recipe(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     name = models.CharField(max_length=200)
     description = models.TextField()
     directions = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
 
 class RecipeIngredient(models.Model):
@@ -32,3 +38,9 @@ class RecipeIngredient(models.Model):
     unit = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
